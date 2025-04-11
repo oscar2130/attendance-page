@@ -65,7 +65,7 @@
         const lng = position.coords.longitude;
         const distance = getDistance(lat, lng, storeLat, storeLng);
 
-        if (distance <= 30) {
+        if (distance <= 140) {
           fetch('https://script.google.com/macros/s/AKfycbztFU7g6YDaIGLaazFgo9Dl7u4e_le17ie24QjLFZKgbkn-LnIGa9pEy83_fpKzlFJO/exec', {
             method: 'POST',
             body: JSON.stringify({
@@ -81,7 +81,7 @@
             document.getElementById('result').innerText = '✅ 인증 완료!';
           });
         } else {
-          document.getElementById('result').innerText = `❌ 매장 반경 30m 이내에서만 인증할 수 있습니다.\n현재 거리: ${Math.round(distance)}m`;
+          document.getElementById('result').innerText = `❌ 매장 반경 140m 이내에서만 인증할 수 있습니다.\n현재 거리: ${Math.round(distance)}m`;
         }
       }, function() {
         document.getElementById('result').innerText = '📍 위치 권한을 허용해주세요.';
