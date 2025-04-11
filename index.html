@@ -5,23 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>출근/퇴근 인증</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; text-align: center; }
-    select, button, input[type=radio] {
-      margin: 10px;
-      padding: 10px;
-      font-size: 16px;
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      text-align: center;
+      background-image: url('https://cdn.pixabay.com/photo/2021/06/08/19/00/donut-6319444_1280.jpg');
+      background-size: 300px;
+      background-repeat: repeat;
+      background-position: center;
+      background-color: #fff5e1;
+      color: #333;
+    }
+
+    h2, label, select, input, button, p {
+      background-color: rgba(255, 255, 255, 0.85);
+      border-radius: 10px;
+      padding: 6px 12px;
+      display: inline-block;
+      margin: 4px;
+    }
+
+    button {
+      background-color: #f26d50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e85c3a;
     }
   </style>
 </head>
 <body>
   <h2 style="line-height: 1.4; margin-bottom: 10px;">
-  <span style="display: block; font-size: 24px; font-weight: bold; color: #d14a3b;">
-    던킨 부산종합운동장역점
-  </span>
-  <span style="display: block; font-size: 18px; font-weight: normal; color: #444;">
-    직원 출근/퇴근 인증시스템
-  </span>
-</h2>
+    <span style="display: block; font-size: 24px; font-weight: bold; color: #d14a3b;">
+      던킨 부산종합운동장역점
+    </span>
+    <span style="display: block; font-size: 18px; font-weight: normal; color: #444;">
+      직원 출근/퇴근 인증시스템
+    </span>
+  </h2>
 
   <label>이름: </label>
   <select id="name">
@@ -42,7 +67,6 @@
   <br />
 
   <button onclick="submitAttendance()">인증 보내기</button>
-
   <p id="result"></p>
 
   <script>
@@ -54,12 +78,9 @@
       const toRad = (x) => x * Math.PI / 180;
       const dLat = toRad(lat2 - lat1);
       const dLon = toRad(lon2 - lon1);
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(lat1)) *
-          Math.cos(toRad(lat2)) *
-          Math.sin(dLon / 2) *
-          Math.sin(dLon / 2);
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       return R * c;
     }
@@ -69,8 +90,7 @@
       const type = document.querySelector('input[name="type"]:checked');
 
       if (!name || !type) {
-        document.getElementById("result").innerText =
-          "이름과 구분을 모두 선택해주세요.";
+        document.getElementById("result").innerText = "이름과 구분을 모두 선택해주세요.";
         return;
       }
 
@@ -101,8 +121,7 @@
               })
               .catch((err) => {
                 console.error("📛 서버 오류:", err);
-                document.getElementById("result").innerText =
-                  "⚠️ 서버 오류가 발생했습니다.";
+                document.getElementById("result").innerText = "⚠️ 서버 오류가 발생했습니다.";
               });
           } else {
             document.getElementById("result").innerText =
@@ -110,8 +129,7 @@
           }
         },
         function () {
-          document.getElementById("result").innerText =
-            "📍 위치 권한을 허용해주세요.";
+          document.getElementById("result").innerText = "📍 위치 권한을 허용해주세요.";
         }
       );
     }
