@@ -5,34 +5,87 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>출근/퇴근 인증</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; text-align: center; }
-    select, button, input[type=radio] { margin: 10px; padding: 10px; font-size: 16px; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      background-image: url('https://oscar2130.github.io/attendance-page/images/dunkin_bg.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-color: #fffefb;
+    }
+    .header {
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    h1 {
+      font-size: 28px;
+      color: #FF671F;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 22px;
+      color: #E51884;
+      margin-top: 0;
+    }
+    .card {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 16px;
+      display: inline-block;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    select, button, input[type=radio] {
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #FF671F;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e55c1a;
+    }
   </style>
 </head>
 <body>
-  <h2>던킨부산종합운동장역점 출근/퇴근 인증</h2>
+  <div class="header">
+    <h1>던킨 부산종합운동장역점</h1>
+    <h2>출퇴근 인증시스템</h2>
+  </div>
 
-  <label>이름: </label>
-  <select id="name">
-    <option value="">--선택--</option>
-    <option>권혜경</option>
-    <option>김예원</option>
-    <option>권혜은</option>
-    <option>홍다빈</option>
-    <option>김도영</option>
-    <option>석정미</option>
-    <option>김지명</option>
-  </select>
-  <br />
+  <div class="card">
+    <label>이름: </label>
+    <select id="name">
+      <option value="">--선택--</option>
+      <option>권혜경</option>
+      <option>김예원</option>
+      <option>권혜은</option>
+      <option>홍다빈</option>
+      <option>김도영</option>
+      <option>석정미</option>
+      <option>김지명</option>
+    </select>
+    <br />
 
-  <label>구분: </label>
-  <input type="radio" name="type" value="출근" /> 출근
-  <input type="radio" name="type" value="퇴근" /> 퇴근
-  <br />
+    <label>구분: </label>
+    <input type="radio" name="type" value="출근" /> 출근
+    <input type="radio" name="type" value="퇴근" /> 퇴근
+    <br />
 
-  <button onclick="submitAttendance()">인증 보내기</button>
+    <button onclick="submitAttendance()">인증 보내기</button>
 
-  <p id="result"></p>
+    <p id="result"></p>
+  </div>
 
   <script>
     const storeLat = 35.268738;
