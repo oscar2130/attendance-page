@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>출근/퇴근 인증</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: sans-serif; padding: 20px; text-align: center; }
+    select, button, input[type=radio] { margin: 10px; padding: 10px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h2>회원 출근 / 퇴근 인증</h2>
+  
+  <label>이름: </label>
+  <select id="name">
+    <option value="">--선택--</option>
+    <option>권혜경</option>
+    <option>김예원</option>
+    <option>권혜은</option>
+    <option>홍다빈</option>
+    <option>김도영</option>
+    <option>석정미</option>
+    <option>김지명</option>
+  </select>
+  <br>
+
+  <label>구분: </label>
+  <input type="radio" name="type" value="출근"> 출근
+  <input type="radio" name="type" value="퇴근"> 퇴근
+  <br>
+
+  <button onclick="submitAttendance()">인증 보내기</button>
+
+  <p id="result"></p>
+
+  <script>
+    const storeLat = 35.1873;
+    const storeLng = 129.0726;
+
+    function getDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const toRad = x => x * Math.PI / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function submitAttendance() {
+      const name = document.getElementById('name').value;
+      const type = document.querySelector('input[name="type"]:checked');
+
+      if (!name || !type) {
+        document.getElementById('result').innerText = '이름과 구분을 모두 선택해주세요.';
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const distance = getDistance(lat, lng, storeLat, storeLng);
+
+        if (distance <= 30) {
+          fetch('https://script.google.com/macros/s/AKfycbztFU7g6YDaIGLaazFgo9Dl7u4e_le17ie24QjLFZKgbkn-LnIGa9pEy83_fpKzlFJO/exec', {
+            method: 'POST',
+            body: JSON.stringify({
+              name: name,
+              type: type.value,
+              lat: lat,
+              lng: lng,
+              timestamp: new Date().toISOString()
+            })
+          })
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById('result').innerText = '✅ 인증 완료!';
+          });
+        } else {
+          document.getElementById('result').innerText = `❌ 매장 반경 30m 이내에서만 인증할 수 있습니다.\n현재 거리: ${Math.round(distance)}m`;
+        }
+      }, function() {
+        document.getElementById('result').innerText = '📍 위치 권한을 허용해주세요.';
+      });
+    }
+  </script>
+</body>
+</html>
