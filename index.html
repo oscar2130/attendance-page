@@ -3,47 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>던킨 출퇴근 인증</title>
+  <title>출근/퇴근 인증</title>
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      text-align: center;
-      /* background-image: url('https://cdn.pixabay.com/photo/2021/06/08/19/00/donut-6319444_1280.jpg'); */
-      background-color: #fff5e1;
-      color: #333;
-    }
-
-    h2, label, select, input, button, p {
-      background-color: rgba(255, 255, 255, 0.85);
-      border-radius: 10px;
-      padding: 6px 12px;
-      display: inline-block;
-      margin: 4px;
-    }
-
-    button {
-      background-color: #f26d50;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #e85c3a;
+    body { font-family: sans-serif; padding: 20px; text-align: center; }
+    select, button, input[type=radio] {
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <h2 style="line-height: 1.4; margin-bottom: 10px;">
-    <span style="display: block; font-size: 24px; font-weight: bold; color: #d14a3b;">
-      던킨 부산종합운동장역점
-    </span>
-    <span style="display: block; font-size: 18px; font-weight: normal; color: #444;">
-      직원 출근/퇴근 인증시스템
-    </span>
-  </h2>
+  <h2> 던킨 출근 / 퇴근 인증</h2>
 
   <label>이름: </label>
   <select id="name">
@@ -64,6 +35,7 @@
   <br />
 
   <button onclick="submitAttendance()">인증 보내기</button>
+
   <p id="result"></p>
 
   <script>
@@ -75,7 +47,12 @@
       const toRad = (x) => x * Math.PI / 180;
       const dLat = toRad(lat2 - lat1);
       const dLon = toRad(lon2 - lon1);
-      const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRad(lat1)) *
+          Math.cos(toRad(lat2)) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       return R * c;
     }
@@ -85,7 +62,8 @@
       const type = document.querySelector('input[name="type"]:checked');
 
       if (!name || !type) {
-        document.getElementById("result").innerText = "이름과 구분을 모두 선택해주세요.";
+        document.getElementById("result").innerText =
+          "이름과 구분을 모두 선택해주세요.";
         return;
       }
 
@@ -96,30 +74,37 @@
           const distance = getDistance(lat, lng, storeLat, storeLng);
 
           if (distance <= 140) {
-            fetch("https://script.google.com/macros/s/AKfycbydrsPsfGPyBlrGPByIb6OxuoCvC9qdid29aex__gX0qIJPpFKfbSWyoYVQVMgJLUKh/exec", {
+            const payload = {
+              name: name,
+              type: type.value,
+              lat: lat.toFixed(8),
+              lng: lng.toFixed(8)
+            };
+
+            fetch("https://script.google.com/macros/s/AKfycbztFU7g6YDaIGLaazFgo9Dl7u4e_le17ie24QjLFZKgbkn-LnIGa9pEy83_fpKzlFJO/exec", {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                name: name,
-                type: type.value,
-                lat: lat.toFixed(8),
-                lng: lng.toFixed(8)
-              })
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(payload)
             })
-              .then(res => res.text())
-              .then(data => {
+              .then((res) => res.text())
+              .then((data) => {
                 document.getElementById("result").innerText = "✅ 인증 완료!";
               })
-              .catch(err => {
+              .catch((err) => {
                 console.error("📛 서버 오류:", err);
-                document.getElementById("result").innerText = "⚠️ 서버 오류가 발생했습니다.";
+                document.getElementById("result").innerText =
+                  "⚠️ 서버 오류가 발생했습니다.";
               });
           } else {
-            document.getElementById("result").innerText = `❌ 매장 반경 140m 이내에서만 인증할 수 있습니다.\n현재 거리: ${Math.round(distance)}m`;
+            document.getElementById("result").innerText =
+              `❌ 매장 반경 140m 이내에서만 인증할 수 있습니다.\n현재 거리: ${Math.round(distance)}m`;
           }
         },
         function () {
-          document.getElementById("result").innerText = "📍 위치 권한을 허용해주세요.";
+          document.getElementById("result").innerText =
+            "📍 위치 권한을 허용해주세요.";
         }
       );
     }
