@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>출근/퇴근 인증</title>
+  <title>출퇴근기록</title>
   <style>
     body {
       font-family: sans-serif;
@@ -99,7 +99,7 @@
           const distance = getDistance(lat, lng, storeLat, storeLng);
 
           if (distance <= 140) {
-            fetch("https://script.google.com/macros/s/AKfycbw8nyEuwTiCjhOx5tmJUP5kmbj0e6mwFGVThmaQJqRDIQ-bx7IJ3dPuNc-FtvTQN0Mq/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbzuRPAtDMjjgh0Y0r0eL2bUe2V8skxrAPnDCdkkIs6O98o2-Adc1_sD7FD7np1hBEI/exec", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
