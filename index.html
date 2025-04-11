@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>던킨 부산종합운동장역점 출근/퇴근 인증시스템</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>출근/퇴근 인증</title>
   <style>
     body { font-family: sans-serif; padding: 20px; text-align: center; }
-    select, button, input[type=radio] { margin: 10px; padding: 10px; font-size: 16px; }
+    select, button, input[type=radio] {
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
-  <h2>던킨 부산종합운동장역점 출근/퇴근 인증시스템</h2>
+  <h2 style="line-height: 1.4; margin-bottom: 10px;">
+  <span style="display: block; font-size: 24px; font-weight: bold; color: #d14a3b;">
+    던킨 부산종합운동장역점
+  </span>
+  <span style="display: block; font-size: 18px; font-weight: normal; color: #444;">
+    직원 출근/퇴근 인증시스템
+  </span>
+</h2>
 
   <label>이름: </label>
   <select id="name">
@@ -65,23 +76,25 @@
 
       navigator.geolocation.getCurrentPosition(
         function (position) {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
+          const lat = parseFloat(position.coords.latitude);
+          const lng = parseFloat(position.coords.longitude);
           const distance = getDistance(lat, lng, storeLat, storeLng);
 
           if (distance <= 140) {
-            fetch(
-              "https://script.google.com/macros/s/AKfycbztFU7g6YDaIGLaazFgo9Dl7u4e_le17ie24QjLFZKgbkn-LnIGa9pEy83_fpKzlFJO/exec",
-              {
-                method: "POST",
-                body: JSON.stringify({
-                  name: name,
-                  type: type.value,
-                  lat: lat,
-                  lng: lng
-                }),
-              }
-            )
+            const payload = {
+              name: name,
+              type: type.value,
+              lat: lat.toFixed(8),
+              lng: lng.toFixed(8)
+            };
+
+            fetch("https://script.google.com/macros/s/AKfycbztFU7g6YDaIGLaazFgo9Dl7u4e_le17ie24QjLFZKgbkn-LnIGa9pEy83_fpKzlFJO/exec", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(payload)
+            })
               .then((res) => res.text())
               .then((data) => {
                 document.getElementById("result").innerText = "✅ 인증 완료!";
@@ -92,7 +105,8 @@
                   "⚠️ 서버 오류가 발생했습니다.";
               });
           } else {
-            document.getElementById("result").innerText = `❌ 매장 반경 140m 이내에서만 인증할 수 있습니다.\n현재 거리: ${Math.round(distance)}m`;
+            document.getElementById("result").innerText =
+              `❌ 매장 반경 140m 이내에서만 인증할 수 있습니다.\n현재 거리: ${Math.round(distance)}m`;
           }
         },
         function () {
