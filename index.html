@@ -55,6 +55,29 @@
     button:hover {
       background-color: #e55c1a;
     }
+
+    .notice {
+      margin-top: 40px;
+      font-weight: bold;
+      color: #ffffff;
+      background-color: #d62828;
+      padding: 15px 20px;
+      font-size: 18px;
+      border-radius: 12px;
+      display: inline-block;
+      animation: pulseShake 2s infinite;
+      box-shadow: 0 0 10px rgba(214, 40, 40, 0.5);
+    }
+
+    @keyframes pulseShake {
+      0% { transform: translateX(0); background-color: #d62828; }
+      10% { transform: translateX(-3px); }
+      20% { transform: translateX(3px); }
+      30% { transform: translateX(-3px); }
+      40% { transform: translateX(3px); }
+      50% { transform: translateX(0); background-color: #e63946; }
+      100% { background-color: #d62828; }
+    }
   </style>
 </head>
 <body style="display: flex; flex-direction: column; justify-content: flex-start; min-height: 100vh; padding-top: 100px;">
@@ -85,6 +108,10 @@
     <button onclick="submitAttendance()">인증 보내기</button>
 
     <p id="result"></p>
+  </div>
+
+  <div class="notice">
+    ⚠️ 출근/퇴근 등록은 <u>하루에 한 번만</u> 가능합니다!
   </div>
 
   <script>
@@ -137,7 +164,7 @@
             )
               .then((res) => res.text())
               .then((data) => {
-                document.getElementById("result").innerText = "✅ 인증 완료!";
+                document.getElementById("result").innerText = data;
               })
               .catch((err) => {
                 console.error("📛 서버 오류:", err);
