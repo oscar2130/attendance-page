@@ -59,7 +59,7 @@
 </head>
 <body style="display: flex; flex-direction: column; justify-content: flex-start; min-height: 100vh; padding-top: 100px;">
   <div class="header">
-    <h1>던킨 부산종합운동장역점.</h1>
+    <h1>.던킨 부산종합운동장역점</h1>
     <h2>출퇴근 인증시스템</h2>
   </div>
 
@@ -122,9 +122,9 @@
           const lng = position.coords.longitude;
           const distance = getDistance(lat, lng, storeLat, storeLng);
 
-          if (distance <= 200) {
+          if (distance <= 150) {
             fetch(
-              "https://script.google.com/macros/s/AKfycbwGtVROtj_46XP6FvQoGTZrIjhfXXorsNxf30NvyykoXH__3928vW56PFzZJUNeFUeA/exec",
+              "https://script.google.com/macros/s/AKfycbxZyYBBhZiyJnUC7izHHi75xrbKmhR9r6qomXgOnsgPsEZfwrhqKj5nCZaFlNdlcA_j/exec",
               {
                 method: "POST",
                 body: JSON.stringify({
@@ -145,7 +145,7 @@
                   "⚠️ 서버 오류가 발생했습니다.";
               });
           } else {
-            document.getElementById("result").innerText = `❌ 매장 반경 200m 이내에서만 인증할 수 있습니다.\n현재 거리: ${Math.round(distance)}m`;
+            document.getElementById("result").innerText = `❌ 매장 반경 150m 이내에서만 인증할 수 있습니다.\n현재 거리: ${Math.round(distance)}m`;
           }
         },
         function () {
