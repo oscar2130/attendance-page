@@ -78,11 +78,18 @@
       50% { transform: translateX(0); background-color: #e63946; }
       100% { background-color: #d62828; }
     }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
   </style>
 </head>
 <body style="display: flex; flex-direction: column; justify-content: flex-start; min-height: 100vh; padding-top: 100px;">
   <div class="header">
-    <h1>던킨 부산종합운동장역점</h1>
+    <h1>던킨 부산종합운동장역점.</h1>
     <h2>출퇴근 인증시스템</h2>
   </div>
 
@@ -164,7 +171,11 @@
             )
               .then((res) => res.text())
               .then((data) => {
-                document.getElementById("result").innerText = data;
+                if (data.trim() === "OK") {
+                  document.getElementById("result").innerText = "✅ 인증되었습니다!";
+                } else {
+                  document.getElementById("result").innerText = data;
+                }
               })
               .catch((err) => {
                 console.error("📛 서버 오류:", err);
