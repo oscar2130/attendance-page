@@ -1,1 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>던킨 부산종합운동장역점 - 비밀번호 입력</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('https://oscar2130.github.io/attendance-page/images/dunkin_bg.png');
+      background-size: 250px;
+      background-repeat: repeat;
+      background-color: #fffefb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 200px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #FF671F;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e55c1a;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
 
+<div class="card">
+  <h1>던킨 부산종합운동장역점</h1>
+  <p>비밀번호를 입력하세요</p>
+  <input type="password" id="password" placeholder="비밀번호">
+  <br>
+  <button onclick="checkPassword()">입장하기</button>
+  <p id="error" class="error"></p>
+</div>
+
+<script>
+  function checkPassword() {
+    const input = document.getElementById('password').value;
+    const realPassword = '0301'; // 👉 여기 비밀번호 설정! (원하는 걸로 바꿔도 돼)
+
+    if (input === realPassword) {
+      window.location.href = 'https://oscar2130.github.io/attendance-page/'; // 👉 이동할 진짜 페이지
+    } else {
+      document.getElementById('error').innerText = '❌ 비밀번호가 틀렸습니다.';
+    }
+  }
+</script>
+
+</body>
+</html>
